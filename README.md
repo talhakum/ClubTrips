@@ -1,17 +1,17 @@
 # ClubTrips
-Club Trips is an Android phone app helping travelers find underground electronic music clubs worldwide. As well as that, it makes sure that clubbers never lose their party crew while being at the event.
+Club Trips is an Android phone app helping people find each other while partying in the club. The app allows them to register their party crew under the name, color, and emoji, after which they can track its members.
 
 ## Contributors
 
 #### Developers: 
 
-Orhan Talha Kum: He will focus on the development of functions in the part of finding clubs, sign up,login, report etc.
+Orhan Talha Kum: Focuses on the development of functions in the part of finding clubs, sign up,login, report etc.
 
 Fatih Durukan: Focuses on the development of functions in the part of finding clubs, sign up,login, report etc.
 
 #### Designer: 
 
-Mariam (Masho) Margishvili:
+Mariam (Masho) Margishvili: Mainly focuses on the visual design of an app.
 
 ## Platform
 
