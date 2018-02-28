@@ -7,7 +7,7 @@ Club Trips is an Android phone app helping travelers find underground electronic
 
 Orhan Talha Kum: He will focus on the development of functions in the part of finding clubs, sign up,login, report etc.
 
-Fatih Durukan: 
+Fatih Durukan: Focuses on the development of functions in the part of finding clubs, sign up,login, report etc.
 
 #### Designer: 
 
