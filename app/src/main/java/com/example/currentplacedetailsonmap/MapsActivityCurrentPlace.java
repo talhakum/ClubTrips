@@ -183,7 +183,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             while (iterator.hasNext()) {
                                 Marker mLastKnownFriendMarker = iterator.next();
                                 mLastKnownFriendMarker.remove();
-                                mLastKnownFriendMarkers.remove(mLastKnownFriendMarker);
+                                iterator.remove();
                             }
 
                             for (DataSnapshot dataSnapshot1 : list) {

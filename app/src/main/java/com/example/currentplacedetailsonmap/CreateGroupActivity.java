@@ -37,7 +37,7 @@ public class CreateGroupActivity extends AppCompatActivity {
             SaveSharedPreference.setUserName(CreateGroupActivity.this, edtTxtUsername.getText().toString());
             SaveSharedPreference.setGroupName(CreateGroupActivity.this, edtTxtGroupName.getText().toString());
 
-            Intent intent = new Intent(this, MapsActivityCurrentPlace.class);
+            Intent intent = new Intent(this, ManageGroupActivity.class);
             startActivity(intent);
         }
     }
