@@ -23,6 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="CREATE"
-        android:onClick="go"/>
+        android:onClick="create"/>
 
 </LinearLayout>

@@ -1,10 +1,13 @@
 package com.example.currentplacedetailsonmap;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -21,6 +24,7 @@ public class ManageGroupActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<String> userNames = new ArrayList<>();
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,24 @@ public class ManageGroupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_manage_group);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyView);
+        recyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(context, MapsActivityCurrentPlace.class);
+                        intent.putExtra("methodName", "focusClickedUser");
+                        intent.putExtra("clickedUser", userNames.get(position));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+                })
+        );
 
         recyclerView.setHasFixedSize(true);
 
@@ -54,9 +76,9 @@ public class ManageGroupActivity extends AppCompatActivity {
                 userNames.clear();
 
                 for (DataSnapshot dataSnapshot1 : list) {
-                        Log.e("friendtest: ", dataSnapshot1.getKey() + " lat: " + dataSnapshot1.child("lat").getValue() + " lng: " + dataSnapshot1.child("lng").getValue());
-                        userNames.add(dataSnapshot1.getKey());
-                        adapter.notifyDataSetChanged();
+                    Log.e("friendtest: ", dataSnapshot1.getKey() + " lat: " + dataSnapshot1.child("lat").getValue() + " lng: " + dataSnapshot1.child("lng").getValue());
+                    userNames.add(dataSnapshot1.getKey());
+                    adapter.notifyDataSetChanged();
                 }
             }
 
@@ -65,5 +87,10 @@ public class ManageGroupActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void go(View v) {
+        Intent intent = new Intent(this, MapsActivityCurrentPlace.class);
+        startActivity(intent);
     }
 }

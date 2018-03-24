@@ -3,6 +3,7 @@ package com.example.currentplacedetailsonmap;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -158,9 +159,9 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                 for (Location location : locationResult.getLocations()) {
                     Log.e("test", location.getLatitude() + " " + location.getLongitude());
                     mLastKnownMarker = mMap.addMarker(new MarkerOptions()
-                            .title("Friend")
-                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                            .snippet("Actually this is so easy"));
+                            .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
+                            .position(new LatLng(location.getLatitude(), location.getLongitude())));
+//                            .snippet("Actually this is so easy"));
 
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
@@ -174,9 +175,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Iterable<DataSnapshot> list = dataSnapshot.getChildren();
-
-//                            if (mLastKnownFriendMarker != null)
-//                                mLastKnownFriendMarker.remove();
 
                             Iterator<Marker> iterator = mLastKnownFriendMarkers.iterator();
 
@@ -192,9 +190,9 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                     Double lat = (Double) dataSnapshot1.child("lat").getValue();
                                     Double lng = (Double) dataSnapshot1.child("lng").getValue();
                                     Marker willAdd = mMap.addMarker(new MarkerOptions()
-                                            .title("Friend")
+                                            .title(dataSnapshot1.getKey())
                                             .position(new LatLng(lat, lng))
-                                            .snippet("Actually this is so easy")
+//                                            .snippet(dataSnapshot1.getKey())
                                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
 
                                     mLastKnownFriendMarkers.add(willAdd);
@@ -207,42 +205,9 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
                         }
                     });
-
-//                    DatabaseHelper dbHelper = new DatabaseHelper(context);
-//
-//                    SQLiteDatabase db = dbHelper.getWritableDatabase();
-//
-//                    ContentValues values = new ContentValues();
-//                    values.put("lat", location.getLatitude());
-//                    values.put("lng", location.getLongitude());
-//
-//                    String selection = "username=?";
-//                    String args[] = {SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this)};
-//
-//                    db.update("groups", values, selection, args);
-//
-//                    String query = "SELECT * FROM groups WHERE username != '" + SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this)+"'";
-//                    Cursor cursor = db.rawQuery(query, null);
-//                    if (cursor.moveToFirst()) {
-//                        while (cursor.isAfterLast() != true) {
-//                            Double lat = cursor.getDouble(cursor.getColumnIndex("lat"));
-//                            Double lng = cursor.getDouble(cursor.getColumnIndex("lng"));
-//                            Log.e("test","friend locations: "+lat+" "+lng);
-//
-//                            if (mLastKnownFriendMarker != null)
-//                                mLastKnownFriendMarker.remove();
-
-//                            mLastKnownFriendMarker = mMap.addMarker(new MarkerOptions()
-//                                    .title("Friend")
-//                                    .position(new LatLng(lat, lng))
-//                                    .snippet("Actually this is so easy")
-//                                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
                 }
             }
-
-
         };
-
 
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -255,7 +220,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
-
     }
 
     /**
@@ -268,6 +232,44 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
             super.onSaveInstanceState(outState);
         }
+    }
+
+    /**
+     * This method moves camera to clicked user
+     *
+     * @param clickedUser
+     */
+    private void focusClickedUser(final String clickedUser) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                for (DataSnapshot dataSnapshot1 : list) {
+                    if (dataSnapshot1.getKey().equals(clickedUser)) {
+                        Double lat = (Double) dataSnapshot1.child("lat").getValue();
+                        Double lng = (Double) dataSnapshot1.child("lng").getValue();
+//                    Move camera to clicked user
+                        Log.v("testNew", String.valueOf(lat + " " + lng));
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                new LatLng(lat,
+                                        lng), DEFAULT_ZOOM));
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -385,8 +387,16 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         // Turn on the My Location layer and the related control on the map.
         updateLocationUI();
 
-        // Get the current location of the device and set the position of the map.
-        getDeviceLocation();
+//        Move camera if user clicked a user in a list
+        Intent intent = getIntent();
+        if (intent.getStringExtra("methodName").equals("focusClickedUser")) {
+            Log.v("testNew", "onNewIntent");
+            String clickedUser = intent.getStringExtra("clickedUser");
+            focusClickedUser(clickedUser);
+        } else {
+            // Get the current location of the device and set the position of the map.
+            getDeviceLocation();
+        }
     }
 
     /**

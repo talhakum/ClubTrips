@@ -22,7 +22,7 @@ public class CreateGroupActivity extends AppCompatActivity {
         edtTxtUsername = (EditText) findViewById(R.id.edtTxtUsername);
     }
 
-    public void go(View v) {
+    public void create(View v) {
 
         if (TextUtils.isEmpty(edtTxtGroupName.getText())) {
             Toast.makeText(this, "Group Name field is required!", Toast.LENGTH_SHORT);
