@@ -355,7 +355,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
 //        Move camera if user clicked a user in a list
         Intent intent = getIntent();
-        if (intent.getStringExtra("methodName").equals("focusClickedUser")) {
+        if (intent.hasExtra("methodName") && intent.getStringExtra("methodName").equals("focusClickedUser")) {
             Log.v("testNew", "onNewIntent");
             String clickedUser = intent.getStringExtra("clickedUser");
             focusClickedUser(clickedUser);
