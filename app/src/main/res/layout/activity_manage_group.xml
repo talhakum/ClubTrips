@@ -4,20 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.currentplacedetailsonmap.ManageGroupActivity"
+    android:gravity="center"
     android:orientation="vertical"
-    android:gravity="center">
+    tools:context="com.example.currentplacedetailsonmap.ManageGroupActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyView"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical"
+        ></android.support.v7.widget.RecyclerView>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="30dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:onClick="go"
         android:text="GO"
-        android:onClick="go"/>
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
 </LinearLayout>

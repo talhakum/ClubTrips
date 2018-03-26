@@ -4,21 +4,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.currentplacedetailsonmap.GroupActivity"
-    android:gravity="center">
+    android:background="@color/background"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.example.currentplacedetailsonmap.GroupActivity">
 
-    <Button
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CREATE A GROUP"
+        android:src="@drawable/crewfinder"
+        android:paddingBottom="30dp" />
+
+
+    <Button
         android:id="@+id/btnCreate"
-        android:onClick="createGroup"/>
-
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ATTEND A GROUP"
+        android:onClick="createGroup"
+        android:text="CREATE A GROUP"
+        android:textStyle="bold"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp"
+        android:background="@color/white"
+        android:textColor="@color/background"/>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="30dp"/>
+
+    <Button
         android:id="@+id/btnAttend"
-        android:onClick="attendGroup"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="attendGroup"
+        android:text="ATTEND A GROUP"
+        android:textStyle="bold"
+        android:paddingRight="50dp"
+        android:paddingLeft="50dp"
+        android:background="@color/white"
+        android:textColor="@color/background" />
+
 
 </LinearLayout>
