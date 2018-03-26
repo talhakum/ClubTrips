@@ -20,7 +20,9 @@
 
         <activity android:name=".MapsActivityCurrentPlace"></activity>
         <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".GroupActivity">
+        <activity
+            android:name=".GroupActivity"
+            android:theme="@style/AppTheme.OnlyStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
