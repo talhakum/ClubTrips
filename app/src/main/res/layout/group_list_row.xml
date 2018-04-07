@@ -13,8 +13,15 @@
 
     <TextView
         android:id="@+id/txtList"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/title"/>
+        android:textColor="@color/title" />
+
+
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:background="@drawable/ic_dialog_close_light"/>-->
 
 </RelativeLayout>
