@@ -3,19 +3,29 @@ package com.example.currentplacedetailsonmap;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,6 +35,7 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -51,7 +62,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         implements OnMapReadyCallback {
 
     private static final String TAG = MapsActivityCurrentPlace.class.getSimpleName();
-    private GoogleMap mMap;
+    static private GoogleMap mMap;
     private CameraPosition mCameraPosition;
 
     LocationRequest mLocationRequest;
@@ -89,6 +100,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private static final long FASTEST_INTERVAL =
             MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
+    ArrayList<String> users = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +120,21 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         // Build the map.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
+
+        MapFragment mapFragment1 = MapFragment.newInstance();
+        mapFragment1.getMapAsync(this);
+        getFragmentManager().beginTransaction().add(R.id.map, mapFragment1).commit();
+
+//        Set users to fragment as argument
+        FragmentTest fragmentTest = new FragmentTest();
+        Bundle args = new Bundle();
+        args.putString("groupName", SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
+        fragmentTest.setArguments(args);
+
+        getFragmentManager().beginTransaction().add(R.id.map, fragmentTest).commit();
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -190,6 +215,108 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+    }
+
+    public static class FragmentTest extends Fragment {
+        List<String> users = new ArrayList<>();
+
+        public FragmentTest() {
+
+        }
+
+        @Nullable
+        @Override
+        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+            View rootView = inflater.inflate(R.layout.map_fragment, container, false);
+
+            final LinearLayout rl = (LinearLayout) rootView.findViewById(R.id.fragment_main_layout);
+
+            Log.v("newtest3", getArguments().getString("groupName"));
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+            final DatabaseReference myRef = database.getReference("locations").child(getArguments().getString("groupName"));
+
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                    users.clear();
+
+                    for (DataSnapshot dataSnapshot1 : list) {
+                        users.add(dataSnapshot1.getKey());
+                        Log.v("newwwtestt", users.toString());
+                    }
+
+                    final float scale = getResources().getDisplayMetrics().density;
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            (int) (40 * scale + 0.5f), (int) (40 * scale + 0.5f)
+
+                    );
+
+                    rl.removeAllViews();
+
+                    params.setMargins((int) (5 * scale + 0.5f), (int) (5 * scale + 0.5f), 0, 0);
+
+                    Iterator<String> iterator = users.iterator();
+
+                    while (iterator.hasNext()) {
+                        Button bt = new Button(getActivity());
+                        bt.setBackgroundResource(R.drawable.button_bg_round);
+                        bt.setGravity(Gravity.LEFT | Gravity.TOP);
+                        bt.setTextSize(10);
+                        bt.setTextColor(Color.WHITE);
+                        bt.setText(iterator.next());
+                        bt.setGravity(Gravity.CENTER);
+                        bt.setLayoutParams(params);
+                        bt.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                final Button b = (Button) v;
+
+                                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                                        for (DataSnapshot dataSnapshot1 : list) {
+                                            if (dataSnapshot1.getKey().equals(b.getText())) {
+                                                Double lat = (Double) dataSnapshot1.child("lat").getValue();
+                                                Double lng = (Double) dataSnapshot1.child("lng").getValue();
+//                    Move camera to clicked user
+                                                Log.v("testNew", String.valueOf(lat + " " + lng));
+                                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                                                        new LatLng(lat,
+                                                                lng), DEFAULT_ZOOM));
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            }
+                        });
+                        rl.addView(bt);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            return rootView;
+        }
     }
 
     /**
