@@ -52,10 +52,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
@@ -104,11 +102,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
     ArrayList<String> users = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -135,7 +132,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
         FragmentTest fragmentTest = new FragmentTest();
         Bundle args = new Bundle();
         args.putString("groupName", SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
-        args.putFloat("scale",getResources().getDisplayMetrics().density);
         fragmentTest.setArguments(args);
 
         getFragmentManager().beginTransaction().add(R.id.map, fragmentTest).commit();
@@ -224,21 +220,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     public static class FragmentTest extends Fragment {
         List<String> users = new ArrayList<>();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-
-        final DatabaseReference myRef = database.getReference("locations");
-
-        ValueEventListener valueEventListener;
-
         public FragmentTest() {
 
-        }
-
-        @Override
-        public void onPause() {
-            hashMap.put(myRef, valueEventListener);
-            removeValueEventListener(hashMap);
-            super.onPause();
         }
 
         @Nullable
@@ -251,11 +234,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
             Log.v("newtest3", getArguments().getString("groupName"));
 
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
 
+            final DatabaseReference myRef = database.getReference("locations").child(getArguments().getString("groupName"));
 
-            final float scale=getArguments().getFloat("float");
-            myRef.child(getArguments().getString("groupName"));
-            valueEventListener= myRef.addValueEventListener(new ValueEventListener() {
+            myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -268,7 +251,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         Log.v("newwwtestt", users.toString());
                     }
 
-                    //final float scale = getResources().getDisplayMetrics().density;
+                    final float scale = getResources().getDisplayMetrics().density;
 
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                             (int) (40 * scale + 0.5f), (int) (40 * scale + 0.5f)
@@ -280,7 +263,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     params.setMargins((int) (5 * scale + 0.5f), (int) (5 * scale + 0.5f), 0, 0);
 
                     Iterator<String> iterator = users.iterator();
-
 
                     while (iterator.hasNext()) {
                         Button bt = new Button(getActivity());
@@ -335,16 +317,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
             return rootView;
         }
-
-        private HashMap<DatabaseReference, ValueEventListener> hashMap = new HashMap<>();
-        public static void removeValueEventListener(HashMap<DatabaseReference, ValueEventListener> hashMap) {
-            for (Map.Entry<DatabaseReference, ValueEventListener> entry : hashMap.entrySet()) {
-                DatabaseReference databaseReference = entry.getKey();
-                ValueEventListener valueEventListener = entry.getValue();
-                databaseReference.removeEventListener(valueEventListener);
-            }
-        }
-
     }
 
     /**
