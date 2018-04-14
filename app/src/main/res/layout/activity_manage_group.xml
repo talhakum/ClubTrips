@@ -10,19 +10,18 @@
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyView"
-        android:layout_width="match_parent"
+        android:layout_width="345dp"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"
-        ></android.support.v7.widget.RecyclerView>
+        android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 
     <Space
         android:layout_width="1dp"
         android:layout_height="30dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@color/background"
+        android:layout_width="80dp"
+        android:layout_height="45dp"
+        android:background="#009DBF"
         android:onClick="go"
         android:text="GO"
         android:textColor="@color/white"
