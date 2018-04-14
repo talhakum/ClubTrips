@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="#FAFAFA"
     android:gravity="center"
     android:orientation="vertical"
     tools:context="com.example.currentplacedetailsonmap.GroupActivity">
@@ -12,21 +12,21 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/crewfinder"
+        android:src="@drawable/ic_launcher_CrewFinder"
         android:paddingBottom="30dp" />
 
 
     <Button
         android:id="@+id/btnCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="225dp"
+        android:layout_height="45dp"
+        android:background="#FFFFFF"
         android:onClick="createGroup"
-        android:text="CREATE A GROUP"
-        android:textStyle="bold"
-        android:paddingRight="50dp"
         android:paddingLeft="50dp"
-        android:background="@color/white"
-        android:textColor="@color/background"/>
+        android:paddingRight="50dp"
+        android:text="CREATE A GROUP"
+        android:textColor="#828282"
+        android:textStyle="bold" />
 
     <Space
         android:layout_width="1dp"
@@ -34,15 +34,15 @@
 
     <Button
         android:id="@+id/btnAttend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="225dp"
+        android:layout_height="45dp"
+        android:background="#FFFFFF"
         android:onClick="attendGroup"
-        android:text="JOIN A GROUP"
-        android:textStyle="bold"
-        android:paddingRight="50dp"
         android:paddingLeft="50dp"
-        android:background="@color/white"
-        android:textColor="@color/background" />
+        android:paddingRight="50dp"
+        android:text="JOIN A GROUP"
+        android:textColor="#828282"
+        android:textStyle="bold" />
 
 
 </LinearLayout>

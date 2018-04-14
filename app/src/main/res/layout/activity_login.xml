@@ -42,14 +42,14 @@
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="125dp"
+        android:layout_height="45dp"
+        android:background="#009DBF"
         android:onClick="login"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
-        android:text="Login"
+        android:text="Log in"
         android:textColor="@color/white"
-        android:textStyle="bold"
-        android:background="@color/background"/>
+        android:textStyle="bold" />
 
 </LinearLayout>
