@@ -8,48 +8,64 @@
     android:orientation="vertical"
     tools:context="com.example.currentplacedetailsonmap.LoginActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp">
+        android:background="@drawable/gradient"
+        android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
 
-        <EditText
-            android:id="@+id/groupname"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Group name" />
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingRight="20dp"
-        android:paddingLeft="20dp">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/username"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="User Name" />
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/groupname"
 
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="30dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Group name" />
+        </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:id="@+id/btnLogin"
-        android:layout_width="125dp"
-        android:layout_height="45dp"
-        android:background="#009DBF"
-        android:onClick="login"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
-        android:text="Log in"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <EditText
+                android:id="@+id/username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="User Name" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="30dp" />
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="125dp"
+            android:layout_height="45dp"
+            android:background="#009DBF"
+            android:onClick="login"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:text="Log in"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
 
 </LinearLayout>

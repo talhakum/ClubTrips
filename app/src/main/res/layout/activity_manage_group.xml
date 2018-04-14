@@ -8,23 +8,38 @@
     android:orientation="vertical"
     tools:context="com.example.currentplacedetailsonmap.ManageGroupActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyView"
-        android:layout_width="345dp"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarManageGroup"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+        android:background="@drawable/gradient"
+        android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
 
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="30dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-    <Button
-        android:layout_width="80dp"
-        android:layout_height="45dp"
-        android:background="#009DBF"
-        android:onClick="go"
-        android:text="GO"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyView"
+            android:layout_width="345dp"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="30dp" />
+
+        <Button
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:background="#009DBF"
+            android:onClick="go"
+            android:text="GO"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </LinearLayout>

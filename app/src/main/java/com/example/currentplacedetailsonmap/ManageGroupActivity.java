@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
@@ -30,6 +31,16 @@ public class ManageGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_group);
+
+        //getting the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarManageGroup);
+
+        //setting the title
+        toolbar.setTitle("Manage Group");
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
+        //placing toolbar in place of actionbar
+        setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyView);
         recyclerView.addOnItemTouchListener(

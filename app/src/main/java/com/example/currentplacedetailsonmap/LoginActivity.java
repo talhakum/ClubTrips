@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
@@ -25,6 +26,16 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //getting the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarLogin);
+
+        //setting the title
+        toolbar.setTitle("Join A Group");
+        toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
+
+        //placing toolbar in place of actionbar
+        setSupportActionBar(toolbar);
 
         username = (EditText) findViewById(R.id.username);
         groupname = (EditText) findViewById(R.id.groupname);

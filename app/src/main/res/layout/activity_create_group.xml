@@ -8,45 +8,60 @@
     android:orientation="vertical"
     tools:context="com.example.currentplacedetailsonmap.CreateGroupActivity">
 
-    <android.support.design.widget.TextInputLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarCreateGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:background="@drawable/gradient"
+        android:minHeight="?attr/actionBarSize"></android.support.v7.widget.Toolbar>
 
-        <EditText
-            android:id="@+id/edtTxtGroupName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Group Name" />
-
-    </android.support.design.widget.TextInputLayout>
-
-    <android.support.design.widget.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/edtTxtUsername"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Username" />
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
-    </android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/edtTxtGroupName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Group Name" />
 
-    <Space
-        android:layout_width="1dp"
-        android:layout_height="30dp" />
+        </android.support.design.widget.TextInputLayout>
 
-    <Button
-        android:layout_width="125dp"
-        android:layout_height="45dp"
-        android:background="#009DBF"
-        android:onClick="create"
-        android:text="CREATE"
-        android:textColor="@color/white"
-        android:textStyle="bold" />
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <EditText
+                android:id="@+id/edtTxtUsername"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="30dp" />
+
+        <Button
+            android:layout_width="125dp"
+            android:layout_height="45dp"
+            android:background="#009DBF"
+            android:onClick="create"
+            android:text="CREATE"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </LinearLayout>
