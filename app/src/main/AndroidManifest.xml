@@ -18,10 +18,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".MapsActivityCurrentPlace"></activity>
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".MapsActivityCurrentPlace" />
+        <activity android:name=".LoginActivity" />
         <activity
-            android:name=".GroupActivity"
+            android:name=".SplashScreen"
             android:theme="@style/AppTheme.OnlyStatusBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,7 +30,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateGroupActivity" />
-        <activity android:name=".ManageGroupActivity"></activity>
+        <activity android:name=".ManageGroupActivity" />
+        <activity
+            android:name=".GroupActivity"
+            android:theme="@style/AppTheme.OnlyStatusBar"></activity>
     </application>
 
 </manifest>
