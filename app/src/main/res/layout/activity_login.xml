@@ -24,8 +24,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
 
             <EditText
                 android:id="@+id/groupname"
@@ -38,8 +38,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp">
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp">
 
             <EditText
                 android:id="@+id/username"
@@ -63,7 +63,7 @@
             android:paddingRight="40dp"
             android:text="Log in"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
     </LinearLayout>
 

@@ -23,7 +23,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyView"
-            android:layout_width="345dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 
@@ -38,7 +38,7 @@
             android:onClick="go"
             android:text="GO"
             android:textColor="@color/white"
-            android:textStyle="bold" />
+            android:textStyle="normal" />
 
     </LinearLayout>
 
