@@ -1,6 +1,7 @@
 package com.example.currentplacedetailsonmap;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +13,19 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.currentplacedetailsonmap.SaveSharedPreference;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
-    EditText username;
-    EditText groupname;
+
+    EditText edtTxtGroupName;
+    EditText edtTxtUsername;
+    Context context = this;
+
 
     private DatabaseReference mDatabase;
 
@@ -37,8 +44,8 @@ public class LoginActivity extends AppCompatActivity {
         //placing toolbar in place of actionbar
         setSupportActionBar(toolbar);
 
-        username = (EditText) findViewById(R.id.username);
-        groupname = (EditText) findViewById(R.id.groupname);
+        edtTxtUsername = (EditText) findViewById(R.id.username);
+        edtTxtGroupName = (EditText) findViewById(R.id.groupname);
     }
 
     public void login(View v) {
@@ -61,17 +68,86 @@ public class LoginActivity extends AppCompatActivity {
 //        myRef.child(username.getText().toString()).setValue("");
 //
 
-        if (TextUtils.isEmpty(username.getText())) {
+        if (TextUtils.isEmpty(edtTxtUsername.getText())) {
             Toast.makeText(this, "User name is required", Toast.LENGTH_SHORT);
-            username.setError("User name is required!");
-        } else if (TextUtils.isEmpty(groupname.getText())) {
+            edtTxtUsername.setError("User name is required!");
+        } else if (TextUtils.isEmpty(edtTxtGroupName.getText())) {
             Toast.makeText(this, "Group is required", Toast.LENGTH_SHORT);
-            username.setError("Group name is required!");
+            edtTxtUsername.setError("Group name is required!");
         } else {
-            SaveSharedPreference.setUserName(LoginActivity.this, username.getText().toString());
-            SaveSharedPreference.setGroupName(LoginActivity.this, groupname.getText().toString());
-            Intent intent = new Intent(this, MapsActivityCurrentPlace.class);
-            startActivity(intent);
+
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+            final DatabaseReference myRef = database.getReference("locations");
+
+            final DatabaseReference myUser = database.getReference("locations").child(SaveSharedPreference.getGroupName(context).toString());
+
+
+            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                boolean flag = false;
+
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                    for (DataSnapshot dataSnapshot1 : list) {
+                        if (dataSnapshot1.getKey().equals(edtTxtGroupName.getText().toString())) {
+
+                            flag = true;
+                        }
+                    }
+
+
+                    if (flag) {
+
+                        myUser.addListenerForSingleValueEvent(new ValueEventListener() {
+                            boolean flag1 = false;
+
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                                for (DataSnapshot dataSnapshot1 : list) {
+                                    if (dataSnapshot1.getKey().equals(edtTxtUsername.getText().toString())) {
+
+                                        flag1 = true;
+                                    }
+
+                                }
+
+                                if(flag1){
+                                    Toast.makeText(context, "Username is taken in your group.Change it!", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    SaveSharedPreference.setUserName(context, edtTxtUsername.getText().toString());
+                                    SaveSharedPreference.setGroupName(context, edtTxtGroupName.getText().toString());
+
+                                    Intent intent = new Intent(context, ManageGroupActivity.class);
+                                    startActivity(intent);
+                                }
+                            }
+
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
+
+
+                    }else{
+                        Toast.makeText(context, "There is no group with that name!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+
+            });
         }
     }
 }
