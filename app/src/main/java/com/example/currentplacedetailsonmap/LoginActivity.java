@@ -116,13 +116,13 @@ public class LoginActivity extends AppCompatActivity {
 
                                 }
 
-                                if(flag1){
+                                if (flag1) {
                                     Toast.makeText(context, "Username is taken in your group.Change it!", Toast.LENGTH_SHORT).show();
-                                }else{
+                                } else {
                                     SaveSharedPreference.setUserName(context, edtTxtUsername.getText().toString());
                                     SaveSharedPreference.setGroupName(context, edtTxtGroupName.getText().toString());
 
-                                    Intent intent = new Intent(context, ManageGroupActivity.class);
+                                    Intent intent = new Intent(context, MapsActivityCurrentPlace.class);
                                     startActivity(intent);
                                 }
                             }
@@ -135,9 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                         });
 
 
-
-
-                    }else{
+                    } else {
                         Toast.makeText(context, "There is no group with that name!", Toast.LENGTH_SHORT).show();
                     }
                 }
