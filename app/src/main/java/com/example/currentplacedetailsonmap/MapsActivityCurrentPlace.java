@@ -188,7 +188,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                             .title(dataSnapshot1.getKey())
                                             .position(new LatLng(lat, lng))
 //                                            .snippet(dataSnapshot1.getKey())
-                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
                                     mLastKnownFriendMarkers.add(willAdd);
                                 }
@@ -268,7 +268,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         Button bt = new Button(getActivity());
                         bt.setBackgroundResource(R.drawable.button_bg_round);
                         bt.setGravity(Gravity.LEFT | Gravity.TOP);
-                        bt.setTextSize(10);
+                        bt.setTextSize(12);
                         bt.setTextColor(Color.WHITE);
                         bt.setText(iterator.next());
                         bt.setGravity(Gravity.CENTER);
