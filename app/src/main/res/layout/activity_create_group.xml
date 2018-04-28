@@ -24,8 +24,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp">
+            android:paddingLeft="55dp"
+            android:paddingRight="55dp">
 
             <EditText
                 android:id="@+id/edtTxtGroupName"
@@ -38,8 +38,8 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp">
+            android:paddingLeft="55dp"
+            android:paddingRight="55dp">
 
             <EditText
                 android:id="@+id/edtTxtUsername"
@@ -55,11 +55,12 @@
 
         <Button
             android:layout_width="125dp"
-            android:layout_height="45dp"
+            android:layout_height="48dp"
             android:background="#009DBF"
             android:onClick="create"
             android:text="CREATE"
             android:textColor="@color/white"
+            android:textSize="16sp"
             android:textStyle="normal" />
 
     </LinearLayout>

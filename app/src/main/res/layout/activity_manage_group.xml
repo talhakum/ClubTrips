@@ -23,21 +23,22 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyView"
-            android:layout_width="280dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:scrollbars="vertical"></android.support.v7.widget.RecyclerView>
 
         <Space
             android:layout_width="1dp"
-            android:layout_height="30dp" />
+            android:layout_height="24dp" />
 
         <Button
             android:layout_width="80dp"
-            android:layout_height="45dp"
+            android:layout_height="48dp"
             android:background="#009DBF"
             android:onClick="go"
             android:text="GO"
             android:textColor="@color/white"
+            android:textSize="16sp"
             android:textStyle="normal" />
 
     </LinearLayout>
