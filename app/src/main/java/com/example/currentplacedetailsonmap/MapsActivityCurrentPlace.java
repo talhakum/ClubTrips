@@ -24,8 +24,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -37,7 +39,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -230,7 +231,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
             View rootView = inflater.inflate(R.layout.map_fragment, container, false);
 
-            final LinearLayout rl = (LinearLayout) rootView.findViewById(R.id.fragment_main_layout);
+            final HorizontalScrollView rl = (HorizontalScrollView) rootView.findViewById(R.id.fragment_main_layout);
 
             Log.v("newtest3", getArguments().getString("groupName"));
 
@@ -254,15 +255,22 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     final float scale = getResources().getDisplayMetrics().density;
 
                     LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                            (int) (40 * scale + 0.5f), (int) (40 * scale + 0.5f)
+                            (int) (50 * scale + 0.5f), (int) (50 * scale + 0.5f)
 
                     );
 
                     rl.removeAllViews();
 
-                    params.setMargins((int) (5 * scale + 0.5f), (int) (5 * scale + 0.5f), 0, 0);
+                    params.setMargins((int) (5 * scale + 0.5f), (int) (10 * scale + 0.5f), 0, 0);
 
                     Iterator<String> iterator = users.iterator();
+
+                    ScrollView sv = new ScrollView(getActivity());
+                    sv.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    LinearLayout ll = new LinearLayout(getActivity());
+                    ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    ll.setOrientation(LinearLayout.HORIZONTAL);
+
 
                     while (iterator.hasNext()) {
                         Button bt = new Button(getActivity());
@@ -270,8 +278,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         bt.setGravity(Gravity.LEFT | Gravity.TOP);
                         bt.setTextSize(12);
                         bt.setTextColor(Color.WHITE);
-                        bt.setText(iterator.next());
+                        String userName = iterator.next();
+                        String pass = (userName.length() > 6) ? userName.substring(0, 4) + ".." : userName;
+                        bt.setText(pass);
                         bt.setGravity(Gravity.CENTER);
+                        bt.setTransitionName(userName);
                         bt.setLayoutParams(params);
                         bt.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -286,7 +297,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                         Iterable<DataSnapshot> list = dataSnapshot.getChildren();
 
                                         for (DataSnapshot dataSnapshot1 : list) {
-                                            if (dataSnapshot1.getKey().equals(b.getText())) {
+                                            if (dataSnapshot1.getKey().equals(b.getTransitionName())) {
                                                 Double lat = (Double) dataSnapshot1.child("lat").getValue();
                                                 Double lng = (Double) dataSnapshot1.child("lng").getValue();
 //                    Move camera to clicked user
@@ -305,8 +316,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                 });
                             }
                         });
-                        rl.addView(bt);
+//                        rl.addView(bt);
+                        ll.addView(bt);
                     }
+                    sv.addView(ll);
+                    rl.addView(sv);
                 }
 
                 @Override
