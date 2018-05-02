@@ -276,10 +276,10 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         Button bt = new Button(getActivity());
                         bt.setBackgroundResource(R.drawable.button_bg_round);
                         bt.setGravity(Gravity.LEFT | Gravity.TOP);
-                        bt.setTextSize(12);
+                        bt.setTextSize(11);
                         bt.setTextColor(Color.WHITE);
                         String userName = iterator.next();
-                        String pass = (userName.length() > 6) ? userName.substring(0, 4) + ".." : userName;
+                        String pass = (userName.length() > 5) ? userName.substring(0, 4) + ".." : userName;
                         bt.setText(pass);
                         bt.setGravity(Gravity.CENTER);
                         bt.setTransitionName(userName);
