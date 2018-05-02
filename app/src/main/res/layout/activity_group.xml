@@ -10,39 +10,44 @@
     tools:context="com.example.currentplacedetailsonmap.GroupActivity">
 
     <ImageView
-        android:layout_width="wrap_content"
+        android:layout_width="232dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/logo"
-        android:paddingBottom="30dp" />
+        android:paddingBottom="30dp"
+        android:src="@drawable/logo" />
 
 
     <Button
         android:id="@+id/btnCreate"
-        android:layout_width="225dp"
-        android:layout_height="45dp"
-        android:background="#FFFFFF"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:background="#ececec"
+        android:bottom="10dp"
         android:onClick="createGroup"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
         android:text="CREATE A GROUP"
-        android:textColor="#828282"
-        android:textStyle="bold" />
+        android:textColor="#939393"
+        android:textSize="16sp"
+        android:textStyle="normal" />
+
 
     <Space
         android:layout_width="1dp"
-        android:layout_height="30dp"/>
+        android:layout_height="24dp" />
 
     <Button
         android:id="@+id/btnAttend"
-        android:layout_width="225dp"
-        android:layout_height="45dp"
-        android:background="#FFFFFF"
+        android:layout_width="200dp"
+        android:layout_height="48dp"
+        android:background="#ececec"
         android:onClick="attendGroup"
-        android:paddingLeft="50dp"
-        android:paddingRight="50dp"
+        android:paddingLeft="25dp"
+        android:paddingRight="25dp"
         android:text="JOIN A GROUP"
-        android:textColor="#828282"
-        android:textStyle="bold" />
+        android:textColor="#939393"
+        android:textSize="16sp"
+
+        android:textStyle="normal" />
 
 
 </LinearLayout>
