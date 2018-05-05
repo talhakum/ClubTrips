@@ -163,11 +163,13 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
                     DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
 
-                    myRef.child(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this).toString()).child("lat").setValue(location.getLatitude());
-                    myRef.child(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this).toString()).child("lng").setValue(location.getLongitude());
+                    //Set users gruop info
+                    myRef.child("users").child(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this).toString()).child("lat").setValue(location.getLatitude());
+                    myRef.child("users").child(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this).toString()).child("lng").setValue(location.getLongitude());
 
-
-                    myRef.addValueEventListener(new ValueEventListener() {
+                    myRef.child("emoji").child("id").setValue(SaveSharedPreference.getEmojiId(MapsActivityCurrentPlace.this));
+                    Log.d("Emoji","Emoji basarili");
+                    myRef.child("users").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             Iterable<DataSnapshot> list = dataSnapshot.getChildren();
@@ -237,7 +239,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
             FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-            final DatabaseReference myRef = database.getReference("locations").child(getArguments().getString("groupName"));
+            final DatabaseReference myRef = database.getReference("locations").child(getArguments().getString("groupName")).child("users");
 
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -353,7 +355,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     private void focusClickedUser(final String clickedUser) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
+        DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString()).child("users");
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -385,7 +387,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     protected void onStop() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
+        DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString()).child("users");
 
         myRef.child(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this).toString()).setValue(null);
 

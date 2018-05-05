@@ -77,7 +77,7 @@ public class ManageGroupActivity extends AppCompatActivity {
     private void prepareUserNames() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
 
-        DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(ManageGroupActivity.this).toString());
+        DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(ManageGroupActivity.this).toString()).child("users");
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override

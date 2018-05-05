@@ -62,6 +62,18 @@
             android:textColor="@color/white"
             android:textSize="16sp"
             android:textStyle="normal" />
+        <Space
+            android:layout_width="1dp"
+            android:layout_height="30dp" />
+
+        <Button
+            android:id="@+id/emoji"
+            android:layout_width="125dp"
+            android:layout_height="45dp"
+            android:background="#009DBF"
+            android:text="Emoji"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
 
     </LinearLayout>
 

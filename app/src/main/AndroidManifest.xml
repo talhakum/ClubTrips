@@ -32,8 +32,12 @@
         <activity android:name=".CreateGroupActivity" />
         <activity android:name=".ManageGroupActivity" />
         <activity
+            android:name=".PopUp"
+            android:theme="@style/AppTheme.CustomTheme" />
+        <activity
             android:name=".GroupActivity"
-            android:theme="@style/AppTheme.OnlyStatusBar"></activity>
+            android:theme="@style/AppTheme.OnlyStatusBar" />
+        <activity android:name=".WelcomeScreenActivity"></activity>
     </application>
 
 </manifest>
