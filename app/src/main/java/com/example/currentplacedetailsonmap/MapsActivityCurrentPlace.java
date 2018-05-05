@@ -168,7 +168,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     myRef.child("users").child(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this).toString()).child("lng").setValue(location.getLongitude());
 
                     myRef.child("emoji").child("id").setValue(SaveSharedPreference.getEmojiId(MapsActivityCurrentPlace.this));
-                    Log.d("Emoji","Emoji basarili");
+                    Log.d("Emoji", "Emoji basarili");
                     myRef.child("users").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -187,13 +187,15 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                     Log.e("friendtest: ", dataSnapshot1.getKey() + " lat: " + dataSnapshot1.child("lat").getValue() + " lng: " + dataSnapshot1.child("lng").getValue());
                                     Double lat = (Double) dataSnapshot1.child("lat").getValue();
                                     Double lng = (Double) dataSnapshot1.child("lng").getValue();
-                                    Marker willAdd = mMap.addMarker(new MarkerOptions()
-                                            .title(dataSnapshot1.getKey())
-                                            .position(new LatLng(lat, lng))
+                                    if (lng != null && lat != null) {
+                                        Marker willAdd = mMap.addMarker(new MarkerOptions()
+                                                .title(dataSnapshot1.getKey())
+                                                .position(new LatLng(lat, lng))
 //                                            .snippet(dataSnapshot1.getKey())
-                                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
 
-                                    mLastKnownFriendMarkers.add(willAdd);
+                                        mLastKnownFriendMarkers.add(willAdd);
+                                    }
                                 }
                             }
                         }
