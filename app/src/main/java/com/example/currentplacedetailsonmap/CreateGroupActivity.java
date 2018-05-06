@@ -2,12 +2,14 @@ package com.example.currentplacedetailsonmap;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,11 +32,30 @@ public class CreateGroupActivity extends AppCompatActivity {
     EditText edtTxtUsername;
     Context context = this;
 
+    public static final int GRID_REQUEST = 1;
+    int selectedImagePath = 0;
+
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+
+
+        Button b = (Button) findViewById(R.id.emoji);
+
+        b.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CreateGroupActivity.this, PopUp.class);
+
+                startActivityForResult(intent,GRID_REQUEST);
+            }
+        });
 
         //getting the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarCreateGroup);
@@ -87,9 +108,15 @@ public class CreateGroupActivity extends AppCompatActivity {
                     if (!flag) {
                         SaveSharedPreference.setUserName(CreateGroupActivity.this, edtTxtUsername.getText().toString());
                         SaveSharedPreference.setGroupName(CreateGroupActivity.this, edtTxtGroupName.getText().toString());
+                        SaveSharedPreference.setEmojiId(CreateGroupActivity.this, selectedImagePath);
 
-                        Intent intent = new Intent(context, ManageGroupActivity.class);
+
+
+                        Intent intent = new Intent(context, WelcomeScreenActivity.class);
+                        String strName = "fromCreate";
+                        intent.putExtra("STRING_I_NEED", strName);
                         startActivity(intent);
+
                     }
                 }
 
@@ -98,6 +125,19 @@ public class CreateGroupActivity extends AppCompatActivity {
 
                 }
             });
+        }
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == GRID_REQUEST) {
+            if(resultCode == RESULT_OK) {
+                selectedImagePath =data.getIntExtra("imagePath",0);
+                //TODO: Set the image in your imageview
+                Log.d("Olumlu","Gelen resim "+selectedImagePath);
+            }
+            if (resultCode == RESULT_CANCELED) {
+                Log.d("test","The selection was cancelled");
+            }
         }
     }
 }

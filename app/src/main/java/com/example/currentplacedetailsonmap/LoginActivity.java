@@ -80,7 +80,7 @@ public class LoginActivity extends AppCompatActivity {
 
             final DatabaseReference myRef = database.getReference("locations");
 
-            final DatabaseReference myUser = database.getReference("locations").child(SaveSharedPreference.getGroupName(context).toString());
+            final DatabaseReference myUser = database.getReference("locations").child(SaveSharedPreference.getGroupName(context).toString()).child("users");
 
 
             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -122,7 +122,9 @@ public class LoginActivity extends AppCompatActivity {
                                     SaveSharedPreference.setUserName(context, edtTxtUsername.getText().toString());
                                     SaveSharedPreference.setGroupName(context, edtTxtGroupName.getText().toString());
 
-                                    Intent intent = new Intent(context, MapsActivityCurrentPlace.class);
+                                    Intent intent = new Intent(context, WelcomeScreenActivity.class);
+                                    String strName = "fromLogin";
+                                    intent.putExtra("STRING_I_NEED", strName);
                                     startActivity(intent);
                                 }
                             }

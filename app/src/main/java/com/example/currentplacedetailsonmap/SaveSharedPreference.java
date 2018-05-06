@@ -11,6 +11,7 @@ import android.preference.PreferenceManager;
 public class SaveSharedPreference {
     static final String PREF_USER_NAME = "username";
     static final String PREF_GROUP_NAME = "groupname";
+    static final String PREF_EMOJI_ID = "emojiId";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -35,4 +36,15 @@ public class SaveSharedPreference {
     public static String getGroupName(Context ctx) {
         return getSharedPreferences(ctx).getString(PREF_GROUP_NAME, "");
     }
+
+    public static int getEmojiId(Context ctx) {
+        return getSharedPreferences(ctx).getInt(PREF_EMOJI_ID, 0);
+    }
+
+    public static void setEmojiId(Context ctx, int emojiId) {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt(PREF_EMOJI_ID, emojiId);
+        editor.commit();
+    }
+
 }
