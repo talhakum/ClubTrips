@@ -3,7 +3,10 @@ package com.example.currentplacedetailsonmap;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -39,6 +42,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -156,10 +160,16 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     Log.e("test", location.getLatitude() + " " + location.getLongitude());
                     mLastKnownMarker = mMap.addMarker(new MarkerOptions()
                             .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
-                            .position(new LatLng(location.getLatitude(), location.getLongitude())));
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.circle1)));
+
 //                            .snippet("Actually this is so easy"));
 
+
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                    Drawable circleDrawable = getResources().getDrawable(R.drawable.pin1);
+                    final BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable);
 
                     DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
 
@@ -192,7 +202,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                                 .title(dataSnapshot1.getKey())
                                                 .position(new LatLng(lat, lng))
 //                                            .snippet(dataSnapshot1.getKey())
-                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                                .icon(markerIcon));
 
                                         mLastKnownFriendMarkers.add(willAdd);
                                     }
@@ -220,6 +230,15 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+    }
+
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     public static class FragmentTest extends Fragment {
