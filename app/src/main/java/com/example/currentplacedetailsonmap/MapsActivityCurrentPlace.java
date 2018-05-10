@@ -158,8 +158,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                 for (Location location : locationResult.getLocations()) {
                     Log.e("test", location.getLatitude() + " " + location.getLongitude());
                     mLastKnownMarker = mMap.addMarker(new MarkerOptions()
-                                    .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
-                                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                            .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
+                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.circle1)));
 
 //                            .snippet("Actually this is so easy"));
@@ -324,9 +324,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                                 Double lng = (Double) dataSnapshot1.child("lng").getValue();
 //                    Move camera to clicked user
                                                 Log.v("testNew", String.valueOf(lat + " " + lng));
-                                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                                        new LatLng(lat,
-                                                                lng), DEFAULT_ZOOM));
+                                                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lng)));
                                             }
                                         }
                                     }
@@ -560,6 +558,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            mMap.getUiSettings().setZoomControlsEnabled(true);
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
