@@ -107,7 +107,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
     ArrayList<String> users = new ArrayList<>();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -159,8 +158,8 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                 for (Location location : locationResult.getLocations()) {
                     Log.e("test", location.getLatitude() + " " + location.getLongitude());
                     mLastKnownMarker = mMap.addMarker(new MarkerOptions()
-                            .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
-                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
+                                    .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
+                                    .position(new LatLng(location.getLatitude(), location.getLongitude()))
                             .icon(BitmapDescriptorFactory.fromResource(R.drawable.circle1)));
 
 //                            .snippet("Actually this is so easy"));
@@ -484,6 +483,18 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
+
+        Drawable circleDrawable = getResources().getDrawable(R.drawable.pressed_pin);
+        final BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable);
+
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.setIcon(markerIcon);
+                return false;
+            }
+        });
+
 
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
