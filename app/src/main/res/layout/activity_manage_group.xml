@@ -31,15 +31,40 @@
             android:layout_width="1dp"
             android:layout_height="24dp" />
 
-        <Button
-            android:layout_width="80dp"
-            android:layout_height="48dp"
-            android:background="#009DBF"
-            android:onClick="go"
-            android:text="GO"
-            android:textColor="@color/white"
-            android:textSize="16sp"
-            android:textStyle="normal" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <Button
+                android:layout_width="80dp"
+                android:layout_height="48dp"
+                android:background="#009DBF"
+                android:onClick="go"
+                android:text="GO"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <Space
+                android:layout_width="24dp"
+                android:layout_height="0dp" />
+
+            <Button
+                android:layout_width="100dp"
+                android:layout_height="48dp"
+                android:background="#009DBF"
+                android:onClick="editPhoto"
+                android:text="Add Photo"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

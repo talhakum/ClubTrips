@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -16,6 +17,7 @@ import android.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -27,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -48,16 +51,22 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An activity that displays a map showing the place at the device's current location.
@@ -89,6 +98,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
     private List<Marker> mLastKnownFriendMarkers = new ArrayList<>();
 
+    private Marker lastClickedMarker;
+
+    FirebaseStorage storage;
+    StorageReference storageReference;
+
     // Keys for storing activity state.
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
@@ -104,6 +118,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
     ArrayList<String> users = new ArrayList<>();
+    Map<String, Bitmap> userPhotos = new HashMap<String, Bitmap>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,10 +153,60 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
         getFragmentManager().beginTransaction().add(R.id.map, fragmentTest).commit();
 
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        final DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
+
+        //                    Get user photos from Firabase Cloud
+        myRef.child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Iterable<DataSnapshot> list = dataSnapshot.getChildren();
+
+                for (DataSnapshot dataSnapshot1 : list) {
+
+                    StorageReference mImageRef =
+                            storageReference.child("images").child("groups").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this)).child(dataSnapshot1.getKey());
+
+                    final long ONE_MEGABYTE = 1024 * 1024 * 5;
+
+                    final String userName = dataSnapshot1.getKey();
+
+                    Log.d("singlevaluedinle", userName);
+
+                    mImageRef.getBytes(ONE_MEGABYTE)
+                            .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                @Override
+                                public void onSuccess(byte[] bytes) {
+                                    Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                                    DisplayMetrics dm = new DisplayMetrics();
+                                    getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+                                    Log.d("addonsuccesslistener", userName);
+                                    userPhotos.put(userName, bm);
+                                }
+                            }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Log.d("tag", "failure!!!");
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         mLocationCallback = new LocationCallback() {
             @Override
@@ -162,7 +227,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                     myRef.child("users").child(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this).toString()).child("lng").setValue(location.getLongitude());
 
                     myRef.child("emoji").child("id").setValue(SaveSharedPreference.getEmojiId(MapsActivityCurrentPlace.this));
-                    Log.d("Emoji", "Emoji basarili");
+
                     myRef.child("users").addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -489,6 +554,15 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
                 TextView snippet = ((TextView) infoWindow.findViewById(R.id.snippet));
                 snippet.setText(marker.getSnippet());
+
+                final ImageView userPhoto = ((ImageView) infoWindow.findViewById(R.id.userPhoto));
+//                userPhoto.setImageBitmap(userPhotos.get(userPhotos.indexOf(marker.getTitle())));
+
+                userPhoto.setImageBitmap(userPhotos.get(marker.getTitle()));
+
+                Log.d("userphoto", marker.getTitle());
+
+//                Log.d("tag", userPhotos.get(marker.getTitle()).toString());
 
                 return infoWindow;
             }

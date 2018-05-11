@@ -75,11 +75,11 @@ public class CreateGroupActivity extends AppCompatActivity {
     public void create(View v) {
 
         if (TextUtils.isEmpty(edtTxtGroupName.getText())) {
-            Toast.makeText(this, "Group Name field is required!", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Group Name field is required!", Toast.LENGTH_SHORT).show();
 
             edtTxtGroupName.setError("Group name is required");
         } else if (TextUtils.isEmpty(edtTxtUsername.getText())) {
-            Toast.makeText(this, "Username field is required!", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Username field is required!", Toast.LENGTH_SHORT).show();
 
             edtTxtUsername.setError("Username is required");
         } else {

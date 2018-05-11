@@ -36,8 +36,6 @@ public class PopUp extends Activity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(PopUp.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
                 selectedImagePath = position;
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("imagePath", selectedImagePath);

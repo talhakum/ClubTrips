@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:layoutDirection="locale"
     android:orientation="vertical">
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -17,4 +18,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="#ff7f7f7f" />
+
+    <ImageView
+        android:id="@+id/userPhoto"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:scaleType="fitXY"
+        android:background="@null"
+         />
 </LinearLayout>
