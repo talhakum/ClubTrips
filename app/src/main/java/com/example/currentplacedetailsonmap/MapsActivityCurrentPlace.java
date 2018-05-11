@@ -3,14 +3,16 @@ package com.example.currentplacedetailsonmap;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +41,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -84,7 +87,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
     private LocationCallback mLocationCallback;
 
-    private Marker mLastKnownMarker;
     private List<Marker> mLastKnownFriendMarkers = new ArrayList<>();
 
     // Keys for storing activity state.
@@ -102,7 +104,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
     ArrayList<String> users = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,18 +149,11 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                 if (locationResult == null) {
                     return;
                 }
-                if (mLastKnownMarker != null) {
-                    mLastKnownMarker.remove();
-                }
-                Log.e("username", SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this));
                 for (Location location : locationResult.getLocations()) {
-                    Log.e("test", location.getLatitude() + " " + location.getLongitude());
-                    mLastKnownMarker = mMap.addMarker(new MarkerOptions()
-                            .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
-                            .position(new LatLng(location.getLatitude(), location.getLongitude())));
-//                            .snippet("Actually this is so easy"));
-
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                    Drawable circleDrawable = getResources().getDrawable(R.drawable.pin1);
+                    final BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable);
 
                     DatabaseReference myRef = database.getReference("locations").child(SaveSharedPreference.getGroupName(MapsActivityCurrentPlace.this).toString());
 
@@ -192,7 +186,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                                 .title(dataSnapshot1.getKey())
                                                 .position(new LatLng(lat, lng))
 //                                            .snippet(dataSnapshot1.getKey())
-                                                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                                                .icon(markerIcon));
 
                                         mLastKnownFriendMarkers.add(willAdd);
                                     }
@@ -220,6 +214,15 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
             return;
         }
         mFusedLocationProviderClient.requestLocationUpdates(mLocationRequest, mLocationCallback, null);
+    }
+
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     public static class FragmentTest extends Fragment {
@@ -306,9 +309,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                                                 Double lng = (Double) dataSnapshot1.child("lng").getValue();
 //                    Move camera to clicked user
                                                 Log.v("testNew", String.valueOf(lat + " " + lng));
-                                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                                        new LatLng(lat,
-                                                                lng), DEFAULT_ZOOM));
+                                                mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(lat, lng)));
                                             }
                                         }
                                     }
@@ -374,6 +375,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(lat,
                                         lng), DEFAULT_ZOOM));
+                        mMap.getUiSettings().setZoomControlsEnabled(true);
                     }
                 }
             }
@@ -530,6 +532,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                     new LatLng(mLastKnownLocation.getLatitude(),
                                             mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+                            mMap.getUiSettings().setZoomControlsEnabled(true);
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
