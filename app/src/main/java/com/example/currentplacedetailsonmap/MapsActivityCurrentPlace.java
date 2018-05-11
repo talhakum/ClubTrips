@@ -13,7 +13,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -88,7 +87,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
 
     private LocationCallback mLocationCallback;
 
-    private Marker mLastKnownMarker;
     private List<Marker> mLastKnownFriendMarkers = new ArrayList<>();
 
     // Keys for storing activity state.
@@ -151,20 +149,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                 if (locationResult == null) {
                     return;
                 }
-                if (mLastKnownMarker != null) {
-                    mLastKnownMarker.remove();
-                }
-                Log.e("username", SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this));
                 for (Location location : locationResult.getLocations()) {
-                    Log.e("test", location.getLatitude() + " " + location.getLongitude());
-                    mLastKnownMarker = mMap.addMarker(new MarkerOptions()
-                            .title(SaveSharedPreference.getUserName(MapsActivityCurrentPlace.this))
-                            .position(new LatLng(location.getLatitude(), location.getLongitude()))
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.circle1)));
-
-//                            .snippet("Actually this is so easy"));
-
-
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
 
                     Drawable circleDrawable = getResources().getDrawable(R.drawable.pin1);
@@ -390,6 +375,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                                 new LatLng(lat,
                                         lng), DEFAULT_ZOOM));
+                        mMap.getUiSettings().setZoomControlsEnabled(true);
                     }
                 }
             }
@@ -481,18 +467,6 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
-
-        Drawable circleDrawable = getResources().getDrawable(R.drawable.pressed_pin);
-        final BitmapDescriptor markerIcon = getMarkerIconFromDrawable(circleDrawable);
-
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                marker.setIcon(markerIcon);
-                return false;
-            }
-        });
-
 
         // Use a custom info window adapter to handle multiple lines of text in the
         // info window contents.
