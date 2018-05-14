@@ -485,6 +485,7 @@ public class MapsActivityCurrentPlace extends AppCompatActivity
                         (FrameLayout) findViewById(R.id.map), false);
 
                 TextView title = ((TextView) infoWindow.findViewById(R.id.title));
+                title.setTextColor(getResources().getColor(R.color.colorPrimary));
                 title.setText(marker.getTitle());
 
                 TextView snippet = ((TextView) infoWindow.findViewById(R.id.snippet));
