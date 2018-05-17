@@ -21,6 +21,8 @@ Android
 
 There are basically two options in the app: Create a Group and Join a Group.
 
+<img width="262" alt="screen shot 2018-05-15 at 01 53 30" src="https://user-images.githubusercontent.com/12021578/40172798-65135d86-59d8-11e8-9d54-779c15318b52.png">
+
 #### Notes
 
 * A group name must be different than the existing one.
