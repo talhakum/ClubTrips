@@ -19,7 +19,13 @@ Android
 
 ## Guide 
 
-There are basically two options in the app: Create a Group and Join a Group
+There are basically two options in the app: Create a Group and Join a Group.
+
+#### Notes
+
+* A group name must be different than the existing one.
+* A user name must be different than the existing one.
+* Default emoji is assigned a group if group creator doesn't select any.
 
 #### Requirements
 
