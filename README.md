@@ -17,5 +17,11 @@ Mariam (Masho) Margishvili: Mainly focuses on the visual design of an app.
 
 Android
 
-## Guide (This will be filled out later)
+## Guide 
+
+There are basically two options in the app: Create a Group and Join a Group
+
+#### Requirements
+
+* Minimumum SDK API: 21
 
