@@ -25,7 +25,7 @@ There are basically two options in the app: Create a Group and Join a Group.
 
 * A group name must be different than the existing one.
 * A user name must be different than the existing one.
-* Default emoji is assigned a group if group creator doesn't select any.
+* Default emoji is assigned to a group if group creator doesn't select any.
 
 #### Requirements
 
